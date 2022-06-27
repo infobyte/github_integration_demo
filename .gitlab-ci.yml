@@ -5,7 +5,7 @@ stages:
   - pre_deploy_testing
   - deploy
   - post_deploy_testing
-  - post_deploy_reporting
+  - reporting_post_deploy
 
 before_script:
     - python -m pip install --upgrade pip
@@ -38,15 +38,16 @@ Run_Zap:
   image: owasp/zap2docker-stable
   script:
     - mkdir /zap/wrk/
+    - mkdir /results/
     - cp -r * /zap/wrk/
-    - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
+    - zap-baseline.py -t $ZAP_SCAN_URL -x /results/zap-report.xml || echo 0
   artifacts:
     name: zap-report
     paths: 
-      - zap-report.xml
+      - /results/zap-report.xml
 
 Zap_Reporting:
-  stage: post_deploy_reporting
+  stage: reporting_post_deploy
   tags:
     - digitalocean-dev
   script:
