@@ -37,11 +37,9 @@ Run_Zap:
     - digitalocean-dev
   image: owasp/zap2docker-stable
   script:
-    - mkdir /zap/wrk/
-    - cp -r * /zap/wrk/
-    - ls /zap/wrk/
+#    - mkdir /zap/wrk/
+#    - cp -r * /zap/wrk/
     - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
-    - ls /zap/wrk/
   artifacts:
     paths: 
       - /zap/wrk/zap-report.xml
