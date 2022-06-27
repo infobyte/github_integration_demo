@@ -57,4 +57,4 @@ Zap_Reporting:
       ref: main
       artifacts: true
   rules:
-    - on_success
+    - when: on_success
