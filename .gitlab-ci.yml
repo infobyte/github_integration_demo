@@ -43,7 +43,7 @@ Run_Zap:
   artifacts:
     name: zap-report
     paths: 
-      - /zap/wrk/zap-report.xml
+      - zap-report.xml
 
 Zap_Reporting:
   stage: reporting_post_deploy
