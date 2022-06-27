@@ -12,8 +12,7 @@ before_script:
     - pip install faraday-cli
 
 Run_Bandit:
-  stage:
-    - pre_deploy_testing
+  stage: pre_deploy_testing
   tags:
     - digitalocean-dev
   script:
@@ -23,8 +22,7 @@ Run_Bandit:
     - allow_failure: true
 
 Push_to_Heroku:
-  stage:
-    - deploy
+  stage: deploy
   tags:
     - digitalocean-dev
   script:
@@ -32,8 +30,7 @@ Push_to_Heroku:
     - git push heroku HEAD:master -f
 
 Run_Zap:
-  stage: 
-    - post_deploy_testing
+  stage: post_deploy_testing
   tags: 
     - digitalocean-dev
   image: owasp/zap2docker-stable
