@@ -56,3 +56,5 @@ Zap_Reporting:
       job: Run_Zap
       ref: main
       artifacts: true
+  rules:
+    - on_success
