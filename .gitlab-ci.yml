@@ -25,9 +25,9 @@ Push_to_Heroku:
   stage: deploy
   tags:
     - digitalocean-dev
-  image:
-    - alpine/git
+  image: alpine/git
   script:
+    - git remote remove heroku
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
     - git push heroku HEAD:master -f
 
