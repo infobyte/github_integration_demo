@@ -12,24 +12,24 @@ before_script:
     - pip install -r requirements.txt
     - pip install faraday-cli
 
-#Run_Bandit:
-#  stage: pre_deploy_testing
-#  tags:
-#    - digitalocean-dev
-#  script:
-#    - bandit -r . -f xml -o flaskapp_faraday_bandit.xml || true
-#    - if [[ $(grep -c testcase flaskapp_faraday_bandit.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report flaskapp_faraday_bandit.xml -w $DEVSECOPS_WORKSPACE); else (echo 'no vulns dettected' && exit 0); fi
-#  rules:
-#    - allow_failure: true
+Run_Bandit:
+  stage: pre_deploy_testing
+  tags:
+    - digitalocean-dev
+  script:
+    - bandit -r . -f xml -o flaskapp_faraday_bandit.xml || true
+    - if [[ $(grep -c testcase flaskapp_faraday_bandit.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report flaskapp_faraday_bandit.xml -w $DEVSECOPS_WORKSPACE); else (echo 'no vulns dettected' && exit 0); fi
+  rules:
+    - allow_failure: true
 
-#Push_to_Heroku:
-#  stage: deploy
-#  tags:
-#    - digitalocean-dev
-#  script:
-#    - git remote remove heroku
-#    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
-#    - git push heroku HEAD:master -f
+Push_to_Heroku:
+  stage: deploy
+  tags:
+    - digitalocean-dev
+  script:
+    - git remote remove heroku
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
+    - git push heroku HEAD:master -f
 
 Run_Zap:
   stage: post_deploy_testing
