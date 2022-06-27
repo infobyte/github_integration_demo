@@ -51,6 +51,8 @@ Zap_Reporting:
     - digitalocean-dev
   script:
     -faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --tag-vuln $CI_PROJECT_NAME
+  dependencies:
+    - Run_Zap
   needs:
     - project: faradaysec/gitlab_integration_demo
       job: Run_Zap
