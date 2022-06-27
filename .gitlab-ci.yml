@@ -38,13 +38,13 @@ Run_Zap:
   image: owasp/zap2docker-stable
   script:
     - mkdir /zap/wrk/
-    - mkdir /results/
+    - mkdir /zap/results/
     - cp -r * /zap/wrk/
-    - zap-baseline.py -t $ZAP_SCAN_URL -x /results/zap-report.xml || echo 0
+    - zap-baseline.py -t $ZAP_SCAN_URL -x /zap/results/zap-report.xml || echo 0
   artifacts:
     name: zap-report
     paths: 
-      - /results/zap-report.xml
+      - /zap/results/zap-report.xml
 
 Zap_Reporting:
   stage: reporting_post_deploy
@@ -53,9 +53,7 @@ Zap_Reporting:
   script:
     - faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --tag-vuln $CI_PROJECT_NAME
   needs:
-    - project: faradaysec/gitlab_integration_demo
-      job: Run_Zap
-      ref: main
+    - job: Run_Zap
       artifacts: true
   rules:
     - when: on_success
