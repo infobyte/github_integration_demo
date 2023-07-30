@@ -3,9 +3,9 @@ default:
 
 stages:
   - pre_deploy_testing
-  #- deploy
+  - deploy
   - post_deploy_testing
-  #- reporting_post_deploy
+  - reporting_post_deploy
 
 before_script:
     - python -m pip install --upgrade pip
