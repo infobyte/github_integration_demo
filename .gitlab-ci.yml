@@ -23,37 +23,37 @@ Run_Bandit:
   rules:
     - allow_failure: true
 
-#Push_to_Heroku:
-#  stage: deploy
-#  tags:
-#    - digitalocean-dev
-#  script:
-#    - git remote remove heroku
-#    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
-#    - git push heroku HEAD:master -f
+Push_to_Heroku:
+ stage: deploy
+ tags:
+   - digitalocean-dev
+ script:
+   - git remote remove heroku
+   - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
+   - git push heroku HEAD:master -f
 
-#Run_Zap:
-#  stage: post_deploy_testing
-#  tags: 
-#    - digitalocean-dev
-#  image: owasp/zap2docker-stable
-#  script:
-#    - mkdir /zap/wrk/
-#    - cp -r * /zap/wrk/
-#    - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
-#    - cp /zap/wrk/zap-report.xml .
-#  artifacts:
-#    paths: 
-#      - zap-report.xml
+Run_Zap:
+ stage: post_deploy_testing
+ tags: 
+   - digitalocean-dev
+ image: owasp/zap2docker-stable
+ script:
+   - mkdir /zap/wrk/
+   - cp -r * /zap/wrk/
+   - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
+   - cp /zap/wrk/zap-report.xml .
+ artifacts:
+   paths: 
+     - zap-report.xml
 
-#Zap_Reporting:
-#  stage: reporting_post_deploy
-#  tags:
-#    - digitalocean-dev
-#  script:
-#    - faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --vuln-tag $CI_PROJECT_NAME
-#  needs:
-#    - job: Run_Zap
-#      artifacts: true
-#  rules:
-#    - when: on_success
+Zap_Reporting:
+ stage: reporting_post_deploy
+ tags:
+   - digitalocean-dev
+ script:
+   - faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --vuln-tag $CI_PROJECT_NAME
+ needs:
+   - job: Run_Zap
+     artifacts: true
+ rules:
+   - when: on_success
