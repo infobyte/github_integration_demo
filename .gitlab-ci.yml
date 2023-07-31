@@ -31,6 +31,7 @@ Push_to_Heroku:
    - git remote remove heroku
    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
    - git push heroku HEAD:master -f
+   - heroku ps:scale web=1
 
 Run_Zap:
  stage: post_deploy_testing
