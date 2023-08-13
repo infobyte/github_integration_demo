@@ -24,6 +24,14 @@ Technologies used
 - [Flask](http://flask.pocoo.org/)
 - SQLite
 
+Instance websites: 
+http://vuln.faradaysec.com/ 
+https://faradaycli-vmpipelines.herokuapp.com
+
+Faraday instance:
+https://demo.apps.faradaysec.com 
+
+
 Folder Structure
 ```
 -dbs (Just a folder for holding the databases that get created by the scripts)
