@@ -2,7 +2,7 @@
 This is going to be a simple Python web server with some simple vulnerabilities.
 
 
-This is going to be running on your computer so tread carefully when running exploits that you don't understand.  This is an exploitable application so be sure to take proper precautions when running it on your computer.
+This is  going to be running on your computer so tread carefully when running exploits that you don't understand.  This is an exploitable application so be sure to take proper precautions when running it on your computer.
 
 
 The goal of this project is to make a python web server that could be easily downloaded and ran for practice/testing/tool trials that
