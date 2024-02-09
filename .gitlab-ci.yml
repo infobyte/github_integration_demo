@@ -17,7 +17,9 @@ Run_Bandit:
   tags:
     - digitalocean-dev
   script:
-    - bandit -r . -f xml -o flaskapp_faraday_bandit.xml || true
+    - bandit=' -f xml -o flaskapp_faraday_bandit.xml || true'
+    - bandit -r . $bandit
+    #- bandit -r . -f xml -o flaskapp_faraday_bandit.xml || true
     - cat flaskapp_faraday_bandit.xml
     - if [[ $(grep -c testcase flaskapp_faraday_bandit.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report flaskapp_faraday_bandit.xml -w $DEVSECOPS_WORKSPACE --vuln-tag "$CI_PROJECT_NAME" --tag-vuln "gitlab$CI_COMMIT_REF_NAME"); else (echo 'no vulns dettected' && exit 0); fi
   rules:
@@ -40,7 +42,9 @@ Run_Zap:
  script:
    - mkdir /zap/wrk/
    - cp -r * /zap/wrk/
-   - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
+   - zap=' -x zap-report.xml || '
+   - zap-baseline.py -t $ZAP_SCAN_URL -x $zap
+   #- zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
    - cp /zap/wrk/zap-report.xml .
  artifacts:
    paths: 
