@@ -19,7 +19,7 @@ Run_Bandit:
   script:
     - bandit -r . -f xml -o flaskapp_faraday_bandit.xml || true
     - cat flaskapp_faraday_bandit.xml
-    - if [[ $(grep -c testcase flaskapp_faraday_bandit.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report flaskapp_faraday_bandit.xml -w $DEVSECOPS_WORKSPACE --vuln-tag "$CI_PROJECT_NAME" --vuln-tag "$CI_COMMIT_REF_NAME"); else (echo 'no vulns dettected' && exit 0); fi
+    - if [[ $(grep -c testcase flaskapp_faraday_bandit.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report flaskapp_faraday_bandit.xml -w $DEVSECOPS_WORKSPACE --vuln-tag "$CI_PROJECT_NAME" --vuln-tag "$CI_COMMIT_REF_NAME"); else (echo 'Bandit - no vulns dettected' && exit 0); fi
   rules:
     - allow_failure: true
 
@@ -42,6 +42,7 @@ Run_Zap:
    - cp -r * /zap/wrk/
    - zap-baseline.py -t $ZAP_SCAN_URL -x zap-report.xml || echo 0
    - cp /zap/wrk/zap-report.xml .
+   - cat /zap/wrk/zap-report.xml
  artifacts:
    paths: 
      - zap-report.xml
@@ -51,8 +52,7 @@ Zap_Reporting:
  tags:
    - digitalocean-dev
  script:
-   - faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --vuln-tag "$CI_PROJECT_NAME" --vuln-tag "$CI_COMMIT_REF_NAME" --asset-tag "$CI_PROJECT_NAME"
-   #- faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --vuln-tag $CI_PROJECT_NAME,$CI_COMMIT_REF_NAME
+  - if [[ $(grep -c testcase zap-report.xml) -gt 0 ]]; then (faraday-cli auth -f $FARADAY_URL -u $FARADAY_USER -p $FARADAY_PASSWORD && faraday-cli tool report zap-report.xml -w $DEVSECOPS_WORKSPACE --vuln-tag "$CI_PROJECT_NAME" --vuln-tag "$CI_COMMIT_REF_NAME"); else (echo 'Zap - no vulns dettected' && exit 0); fi
  needs:
    - job: Run_Zap
      artifacts: true
