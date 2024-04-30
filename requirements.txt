@@ -12,4 +12,4 @@ PyYAML==5.3.1
 six==1.15.0
 smmap==3.0.4
 stevedore==3.3.0
-Werkzeug==1.0.1
+Werkzeug==2.3.8
